@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="http://localhost:8080/chartdata">
+    <p> start <input type="date" name="start"></p>
+    <p> end <input type="date" name="end"></p>
+    <p> ticker
+        <select name="ticker">
+            <option value="">-- 선택 --</option>
+            <option th:each="val : ${TICKERS_MAS}" th:value="${val?.Name}"
+                    th:utext="${val?.COMPANY_NAME}">
+            </option>
+        </select>
+    </p>
+    <p> add_days <input type="text" name="add_days"></p>
+    <p> limitcount <input type="text" name="limitcount"></p>
+    <p><input type="submit" value="Submit"></p>
+</form>
+</body>
+</html>
