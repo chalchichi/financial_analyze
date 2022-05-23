@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.awt.*;
 import java.io.*;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class ChartRESTController {
     public @ResponseBody
     byte[] testsearch(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                       @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
-                      @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount) throws IOException, InterruptedException {
-        List<MAIN_STOCK_20Y_INF> main_stock_20Y_infs = chartImageService.chartService(start, end, ticker, add_days, limitcount);
+                      @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount) throws IOException, InterruptedException, ParseException {
+        chartImageService.chartService(start, end, ticker, add_days, limitcount);
 
         FileInputStream fis = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -55,16 +56,6 @@ public class ChartRESTController {
             throw new RuntimeException("File Error");
         }
         return fileArray;
-    }
-
-
-    @PostMapping("/chartdata")
-    public String searchChart(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
-                              @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
-                              @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount) throws IOException, InterruptedException {
-        List<MAIN_STOCK_20Y_INF> main_stock_20Y_infs = chartImageService.chartService(start, end, ticker, add_days, limitcount);
-
-        return "OK";
     }
 
 }

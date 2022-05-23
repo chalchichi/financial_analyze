@@ -26,8 +26,15 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+function sleep(ms) {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+};
+
 function getChart() {
     var formData = document.getElementById('charted');
+    $(".overlay").show();
+
     fetch('http://localhost:8080/chartdata', {
         method: 'POST',
         cache: 'no-cache',
@@ -41,17 +48,30 @@ function getChart() {
             add_days: formData.add_days.value,
             limitcount: formData.limitcount.value
         })
-    }).then(response => response.text())
-        .then(data => {
-            if(data=="OK")
-            {
-                console.log("OK");
-                $("#ChartArea").load(window.location.href + " #ChartArea");
-                console.log("OK");
-            }
-            else
-            {
-                alert("There is no data");
-            }
+    })
+        .then((response) => response.text())
+        .then(data=>{
+            $('#TargetData').html(data);
+            const rand2 = Math.floor(Math.random());
+            var src ='http://localhost:8081/files/myplot.png?name='+rand2;
+            var imghtml = '<img src=\"' + src + '" alt=\"My Image\" id = \"img\" style=\"height:100%; width: 100%;\"></canvas>'
+            console.log(imghtml);
+            //$('#Targetplot').html(imghtml)
+            $(".overlay").hide();
         });
+
 }
+
+function init()
+{
+
+    var formData = document.getElementById('charted');
+    formData.start.value = sessionStorage.getItem('start')
+
+    formData.end.value = sessionStorage.getItem('end')
+    formData.ticker.value = sessionStorage.getItem('ticker')
+    formData.add_days.value = sessionStorage.getItem('add_days')
+    formData.limitcount.value = sessionStorage.getItem('limitcount')
+}
+
+init();
