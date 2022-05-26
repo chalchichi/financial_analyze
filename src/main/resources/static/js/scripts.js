@@ -34,7 +34,10 @@ function sleep(ms) {
 function getChart() {
     var formData = document.getElementById('charted');
     $(".overlay").show();
-
+    var table = $('#datatablesSimple').DataTable();
+    table.rows()
+        .remove()
+        .draw();
     fetch('http://localhost:8080/chartdata', {
         method: 'POST',
         cache: 'no-cache',
@@ -49,14 +52,26 @@ function getChart() {
             limitcount: formData.limitcount.value
         })
     })
-        .then((response) => response.text())
-        .then(data=>{
-            $('#TargetData').html(data);
+        .then((response) => response.json())
+        .then(datajson=>{
+            //change plot
             const rand2 = Math.floor(Math.random());
             var src ='http://localhost:8081/files/myplot.png?name='+rand2;
             var imghtml = '<img src=\"' + src + '" alt=\"My Image\" id = \"img\" style=\"height:100%; width: 100%;\"></canvas>'
-            console.log(imghtml);
-            //$('#Targetplot').html(imghtml)
+            $('#Targetplot').html(imghtml);
+
+            for (let i = 0; i < datajson.length; i++) {
+                table.row.add(
+                    [
+                        datajson[i].tday,
+                        Math.round(datajson[i].close*10000)/10000,
+                        Math.round(datajson[i].high*10000)/10000,
+                        Math.round(datajson[i].open*10000)/10000,
+                        Math.round(datajson[i].low*10000)/10000,
+                        Math.round(datajson[i].volume*10000)/10000
+                    ]
+                ).draw(false);
+            }
             $(".overlay").hide();
         });
 
@@ -64,7 +79,7 @@ function getChart() {
 
 function init()
 {
-
+    $('#example').DataTable();
     var formData = document.getElementById('charted');
     formData.start.value = sessionStorage.getItem('start')
 

@@ -39,19 +39,5 @@ public class ChartController {
         return "index.html";
     }
 
-    @PostMapping("/chartdata")
-    public String searchChart(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
-                              @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
-                              @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount
-                            , Model model) throws IOException, InterruptedException, ParseException {
-        List<Map<String, Date>> targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount);
-
-        int randomfornotcache = (int)(Math.random()*100);
-        model.addAttribute("TempIMGsrc","http://localhost:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
-
-        List<MAIN_STOCK_20Y_INF> tabledata = chartDataServcie.gettargetdata(ticker,targetlist);
-        model.addAttribute("targeted",tabledata);
-        return "TargetDatatable.html";
-    }
 
 }

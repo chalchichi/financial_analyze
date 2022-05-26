@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class ChartDataServcie {
     @Autowired
@@ -26,6 +27,7 @@ public class ChartDataServcie {
                     main_stock_20Y_infRepository.findMAIN_STOCK_20Y_INFByTDAYBetweenAndTICKEREquals(m.get("from"),m.get("to"),tickers_mas);
             tempdate.forEach(x->totaltargetlist.add(x));
         }
+        
         return totaltargetlist;
     }
 }
