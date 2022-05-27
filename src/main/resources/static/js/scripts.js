@@ -38,7 +38,7 @@ function getChart() {
     table.rows()
         .remove()
         .draw();
-    fetch('http://localhost:8080/chartdata', {
+    fetch('http://ohora.iptime.org:8080/chartdata', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -54,11 +54,6 @@ function getChart() {
     })
         .then((response) => response.json())
         .then(datajson=>{
-            //change plot
-            const rand2 = Math.floor(Math.random());
-            var src ='http://localhost:8081/files/myplot.png?name='+rand2;
-            var imghtml = '<img src=\"' + src + '" alt=\"My Image\" id = \"img\" style=\"height:100%; width: 100%;\"></canvas>'
-            $('#Targetplot').html(imghtml);
 
             for (let i = 0; i < datajson.length; i++) {
                 table.row.add(
@@ -71,9 +66,23 @@ function getChart() {
                         Math.round(datajson[i].volume*10000)/10000
                     ]
                 ).draw(false);
+
             }
-            $(".overlay").hide();
-        });
+            return datajson;
+        })
+        .then((datajson) => {
+                const rand2 = Math.floor(Math.random());
+                var html = '                                        <object data="http://ohora.iptime.org:8081/myplot.html' +'?name='+rand2 +'"\n'+
+                    '                                                width="1600"\n' +
+                    '                                                height="600"\n' +
+                    '                                                type="text/html">\n' +
+                    '                                        </object>'
+                console.log(html);
+                $('#Targetplot').html(html)
+                $(".overlay").hide();
+            }
+        );
+
 
 }
 

@@ -14,7 +14,7 @@ import java.util.Date;
 public class MAIN_STOCK_20Y_INF {
 
     @Id
-    private Long ID;
+    private Integer ID;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

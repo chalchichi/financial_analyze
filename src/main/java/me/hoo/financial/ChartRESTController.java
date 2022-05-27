@@ -3,10 +3,11 @@ package me.hoo.financial;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.io.IOUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.awt.*;
 import java.io.*;
@@ -72,4 +73,5 @@ public class ChartRESTController {
         List<MAIN_STOCK_20Y_INF> tabledata = chartDataServcie.gettargetdata(ticker,targetlist);
         return tabledata;
     }
+    
 }

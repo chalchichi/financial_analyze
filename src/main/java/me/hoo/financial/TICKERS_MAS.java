@@ -17,7 +17,5 @@ public class TICKERS_MAS {
 
     private String INDUSTRY;
 
-    private String INDUSTRY_CODE;
-
     private Boolean IS_MAIN_STOCK;
 }
