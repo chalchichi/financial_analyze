@@ -38,7 +38,7 @@ function getChart() {
     table.rows()
         .remove()
         .draw();
-    fetch('http://ohora.iptime.org:8080/chartdata', {
+    fetch('http://localhost:8080/chartdata', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -54,7 +54,6 @@ function getChart() {
     })
         .then((response) => response.json())
         .then(datajson=>{
-
             for (let i = 0; i < datajson.length; i++) {
                 table.row.add(
                     [
@@ -71,17 +70,26 @@ function getChart() {
             return datajson;
         })
         .then((datajson) => {
-                const rand2 = Math.floor(Math.random());
-                var html = '                                        <object data="http://ohora.iptime.org:8081/myplot.html' +'?name='+rand2 +'"\n'+
-                    '                                                width="1600"\n' +
-                    '                                                height="600"\n' +
+                const rand2 = Math.floor(Math.random()*10000);
+                const email = document.getElementById("Email").textContent
+
+                console.log(email.co)
+                var html = '                                        <object data="http://localhost:8081/myplot_' +email+ '.html?name='+rand2 +'"\n'+
+                    '                                                width="100%"\n' +
+                    '                                                height="500"\n' +
                     '                                                type="text/html">\n' +
                     '                                        </object>'
-                console.log(html);
+                console.log(html)
                 $('#Targetplot').html(html)
                 $(".overlay").hide();
             }
-        );
+        )
+        .catch((error) => {
+            $(".overlay").hide();
+            $('#Targetplot').html('')
+            alert("날짜를 확인해주세요");
+            console.error('fetch에 문제가 있었습니다.', error);
+    });
 
 
 }

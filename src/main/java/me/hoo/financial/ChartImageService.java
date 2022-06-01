@@ -24,7 +24,7 @@ public class ChartImageService {
     @Autowired
     MAIN_STOCK_20Y_INFRepository main_stock_20Y_infRepository;
 
-    public List<Map<String, Date>> chartService(Date start, Date end, String ticker, String add_days, String limitcount) throws IOException, InterruptedException, ParseException {
+    public List<Map<String, Date>> chartService(Date start, Date end, String ticker, String add_days, String limitcount,String email) throws IOException, InterruptedException, ParseException {
         List<Map<String,Date>> targetlist = new ArrayList<>();
         Optional<TICKERS_MAS> mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
         TICKERS_MAS tickers_mas = mas.get();
@@ -40,6 +40,7 @@ public class ChartImageService {
         cmd +=" "+Days;
         cmd +=" "+add_days;
         cmd +=" "+limitcount;
+        cmd +=" "+email;
         String s;
 
         Process p = Runtime.getRuntime().exec(cmd);

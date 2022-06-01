@@ -1,6 +1,10 @@
 package me.hoo.financial;
 
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import me.hoo.financial.oauth.SessionUser;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.io.*;
 import java.text.ParseException;
@@ -17,7 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
+@Slf4j
 public class ChartRESTController {
 
     @Autowired
@@ -29,12 +36,21 @@ public class ChartRESTController {
     @Autowired
     TICKERS_MASRepository tickers_masRepository;
 
+    private final HttpSession httpSession;
+
+    @ExceptionHandler(InterruptedException.class)
+    public Object nullex(Exception e) {
+        log.error("handleHttpRequestMethodNotSupportedException", e);
+        return new ResponseEntity<>("R interrupted", HttpStatus.METHOD_NOT_ALLOWED);
+
+    }
+
     @GetMapping(value = "/Totalchart", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
     byte[] testsearch(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                       @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
                       @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount) throws IOException, InterruptedException, ParseException {
-        chartImageService.chartService(start, end, ticker, add_days, limitcount);
+        chartImageService.chartService(start, end, ticker, add_days, limitcount,null);
 
         FileInputStream fis = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -69,9 +85,11 @@ public class ChartRESTController {
                               @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
                               @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount
             , Model model) throws IOException, InterruptedException, ParseException {
-        List<Map<String, Date>> targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount);
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        List<Map<String, Date>> targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount,user.getEmail());
         List<MAIN_STOCK_20Y_INF> tabledata = chartDataServcie.gettargetdata(ticker,targetlist);
         return tabledata;
     }
+
     
 }
