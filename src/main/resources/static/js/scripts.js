@@ -73,7 +73,6 @@ function getChart() {
                 const rand2 = Math.floor(Math.random()*10000);
                 const email = document.getElementById("Email").textContent
 
-                console.log(email.co)
                 var html = '                                        <object data="http://localhost:8081/myplot_' +email+ '.html?name='+rand2 +'"\n'+
                     '                                                width="100%"\n' +
                     '                                                height="500"\n' +
@@ -82,6 +81,13 @@ function getChart() {
                 console.log(html)
                 $('#Targetplot').html(html)
                 $(".overlay").hide();
+
+                var formData = document.getElementById('charted');
+                sessionStorage.setItem('start',formData.start.value)
+                sessionStorage.setItem('end',formData.end.value)
+                sessionStorage.setItem('ticker',formData.ticker.value)
+                sessionStorage.setItem('add_days',formData.add_days.value)
+                sessionStorage.setItem('limitcount',formData.limitcount.value)
             }
         )
         .catch((error) => {

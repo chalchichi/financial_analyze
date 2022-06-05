@@ -68,4 +68,8 @@ public class ChartController {
         return "login.html";
     }
 
+    @GetMapping("/main.html")
+    public String handleStep2Get() {
+        return "redirect:/";
+    }
 }
