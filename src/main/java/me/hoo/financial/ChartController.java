@@ -51,8 +51,10 @@ public class ChartController {
             tickerlist = result;
 
             int randomfornotcache = (int)(Math.random()*100);
-            //no image
+
+            //for no cache image
             model.addAttribute("TempIMGsrc","http://localhost:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
+
             model.addAttribute("UserEmail",user.getEmail());
             model.addAttribute("profileimgsrc",user.getPicture());
             return "main.html";

@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public interface MAIN_STOCK_20Y_INFRepository extends JpaRepository<MAIN_STOCK_20Y_INF,Long> {
+public interface MAIN_STOCK_20Y_INFRepository extends JpaRepository<MAIN_STOCK_20Y_INF,Integer> {
 
 
     List<MAIN_STOCK_20Y_INF> findMAIN_STOCK_20Y_INFByTICKER(TICKERS_MAS ticker, Sort tday);

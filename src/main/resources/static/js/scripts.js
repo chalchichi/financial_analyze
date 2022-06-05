@@ -94,6 +94,56 @@ function getChart() {
 
 }
 
+function show () {
+    console.log("show");
+    document.querySelector(".background").className = "background show";
+    const email = document.getElementById("Email").textContent
+
+    var table = $('#activelogdatatable').DataTable();
+    table.rows()
+        .remove()
+        .draw();
+    fetch('http://localhost:8080/activelog', {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            email: email
+        })
+    })
+        .then((response) => response.json())
+        .then(datajson=>{
+            console.log(datajson[0])
+            for (let i = 0; i < datajson.length; i++) {
+                table.row.add(
+                    [
+                        datajson[i].searchTime,
+                        datajson[i].startDate,
+                        datajson[i].endDate,
+                        datajson[i].ticker.company_NAME,
+                        datajson[i].add_days,
+                        datajson[i].limitcount
+
+                    ]
+                ).draw(false);
+
+            }
+
+            return datajson;
+        })
+
+}
+
+function close () {
+    console.log("close")
+    document.querySelector(".background").className = "background";
+}
+
+document.querySelector("#show").addEventListener('click', show);
+document.querySelector("#close").addEventListener('click', close);
+
 function init()
 {
     $('#example').DataTable();
@@ -107,3 +157,4 @@ function init()
 }
 
 init();
+

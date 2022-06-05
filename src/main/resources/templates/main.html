@@ -40,9 +40,11 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <img th:src="${profileimgsrc}"/>
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li>
+                            <button class="dropdown-item" id="show">Active Log</button>
+                        </li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -222,6 +224,35 @@
                         </div>
                     </div>
                 </footer>
+            </div>
+        </div>
+        <div class="background">
+            <div class="window">
+                <div class="popup">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Analysis Data
+                        </div>
+                        <div class="card-body">
+                            <table id="activelogdatatable">
+                                <thead>
+                                <tr>
+                                    <th>searchTime</th>
+                                    <th>startDate</th>
+                                    <th>endDate</th>
+                                    <th>company_NAME</th>
+                                    <th>add_days</th>
+                                    <th>limitcount</th>
+                                </tr>
+                                </thead>
+                                <tbody id = "activelog">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button id="close">팝업닫기</button>
+                </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

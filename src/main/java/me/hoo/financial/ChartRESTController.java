@@ -3,7 +3,9 @@ package me.hoo.financial;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.hoo.financial.LogAOP.UserActiveLog;
 import me.hoo.financial.oauth.SessionUser;
+import me.hoo.financial.oauth.User;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.io.*;
 import java.text.ParseException;
@@ -34,6 +37,9 @@ public class ChartRESTController {
     ChartDataServcie chartDataServcie;
 
     @Autowired
+    User_Search_LogService user_search_logService;
+
+    @Autowired
     TICKERS_MASRepository tickers_masRepository;
 
     private final HttpSession httpSession;
@@ -44,6 +50,7 @@ public class ChartRESTController {
         return new ResponseEntity<>("R interrupted", HttpStatus.METHOD_NOT_ALLOWED);
 
     }
+
 
     @GetMapping(value = "/Totalchart", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
@@ -89,6 +96,13 @@ public class ChartRESTController {
         List<Map<String, Date>> targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount,user.getEmail());
         List<MAIN_STOCK_20Y_INF> tabledata = chartDataServcie.gettargetdata(ticker,targetlist);
         return tabledata;
+    }
+
+    @PostMapping("/activelog")
+    public List<USER_SEARCH_LOG> getUsersearchlog(@RequestParam String email)
+    {
+        List<USER_SEARCH_LOG> loglist = user_search_logService.getusersearchloglist(email);
+        return loglist;
     }
 
     

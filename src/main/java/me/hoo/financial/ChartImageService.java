@@ -2,6 +2,7 @@ package me.hoo.financial;
 
 
 import lombok.extern.slf4j.Slf4j;
+import me.hoo.financial.LogAOP.UserActiveLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class ChartImageService {
     @Autowired
     MAIN_STOCK_20Y_INFRepository main_stock_20Y_infRepository;
 
+    @UserActiveLog
     public List<Map<String, Date>> chartService(Date start, Date end, String ticker, String add_days, String limitcount,String email) throws IOException, InterruptedException, ParseException {
         List<Map<String,Date>> targetlist = new ArrayList<>();
         Optional<TICKERS_MAS> mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
