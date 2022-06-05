@@ -123,6 +123,7 @@ function show () {
                         datajson[i].startDate,
                         datajson[i].endDate,
                         datajson[i].ticker.company_NAME,
+                        datajson[i].ticker.name,
                         datajson[i].add_days,
                         datajson[i].limitcount
 
@@ -141,15 +142,45 @@ function close () {
     document.querySelector(".background").className = "background";
 }
 
+function searchlog()
+{
+    var table = $('#activelogdatatable').DataTable();
+    const array = table.rows('.selected').data().toArray();
+    const start = array[0][1];
+    const end = array[0][2];
+    const ticker = array[0][4];
+    const adddays = array[0][5];
+    const limitcount = array[0][6];
+
+    $('#start').val(start);
+    $('#end').val(end);
+    $('#ticker').val(ticker);
+    $('#add_days').val(adddays);
+    $('#limitcount').val(limitcount);
+    close();
+    getChart();
+}
+
 document.querySelector("#show").addEventListener('click', show);
 document.querySelector("#close").addEventListener('click', close);
+document.querySelector("#searchlog").addEventListener('click', searchlog);
 
 function init()
 {
+    var table = $('#activelogdatatable').DataTable();
+
+    $('#activelogdatatable tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    });
+
     $('#example').DataTable();
     var formData = document.getElementById('charted');
     formData.start.value = sessionStorage.getItem('start')
-
     formData.end.value = sessionStorage.getItem('end')
     formData.ticker.value = sessionStorage.getItem('ticker')
     formData.add_days.value = sessionStorage.getItem('add_days')
