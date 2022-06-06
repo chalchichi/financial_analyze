@@ -7,12 +7,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +32,7 @@ public class ChartController {
     TICKERS_MASRepository tickers_masRepository;
 
     @Autowired
-    ChartDataServcie chartDataServcie;
+    ChartDataService chartDataService;
 
     private final HttpSession httpSession;
 
@@ -71,5 +74,28 @@ public class ChartController {
     @GetMapping("/main.html")
     public String handleStep2Get() {
         return "redirect:/";
+    }
+
+    @GetMapping("/news")
+    public String getnews(@ModelAttribute("start") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
+                          @ModelAttribute("end")  @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
+                          Model model) throws IOException, InterruptedException {
+
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        List<String> newslist = new ArrayList<String>();
+        while(true)
+        {
+            if(cal.getTime().equals(end))
+            {
+                newslist.add(chartDataService.makenewshtmltext(cal.getTime()));
+                break;
+            }
+            newslist.add(chartDataService.makenewshtmltext(cal.getTime()));
+            cal.add(Calendar.DATE, 1);
+        }
+        model.addAttribute("newslist",newslist);
+        return "news.html";
     }
 }

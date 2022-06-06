@@ -167,10 +167,17 @@ function searchlog()
     getChart();
 }
 
+function getnews()
+{
+    var formData = document.getElementById('charted');
+    console.log(formData.end.value)
+    location.href = "/news?start="+formData.start.value+"&end="+formData.end.value;
+}
+
 document.querySelector("#show").addEventListener('click', show);
 document.querySelector("#close").addEventListener('click', close);
 document.querySelector("#searchlog").addEventListener('click', searchlog);
-
+document.querySelector("#news").addEventListener('click',getnews),
 function init()
 {
     var table = $('#activelogdatatable').DataTable();

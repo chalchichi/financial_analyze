@@ -34,7 +34,7 @@ public class ChartRESTController {
     ChartImageService chartImageService;
 
     @Autowired
-    ChartDataServcie chartDataServcie;
+    ChartDataService chartDataServcie;
 
     @Autowired
     User_Search_LogService user_search_logService;
