@@ -38,7 +38,7 @@ function getChart() {
     table.rows()
         .remove()
         .draw();
-    fetch('http://localhost:8080/chartdata', {
+    fetch('http://ohora.iptime.org:8080/chartdata', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -73,7 +73,7 @@ function getChart() {
                 const rand2 = Math.floor(Math.random()*10000);
                 const email = document.getElementById("Email").textContent
 
-                var html = '                                        <object data="http://localhost:8081/myplot_' +email+ '.html?name='+rand2 +'"\n'+
+                var html = '                                        <object data="http://ohora.iptime.org:8081/myplot_' +email+ '.html?name='+rand2 +'"\n'+
                     '                                                width="100%"\n' +
                     '                                                height="500"\n' +
                     '                                                type="text/html">\n' +
@@ -109,7 +109,7 @@ function show () {
     table.rows()
         .remove()
         .draw();
-    fetch('http://localhost:8080/activelog', {
+    fetch('http://ohora.iptime.org:8080/activelog', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -177,7 +177,8 @@ function getnews()
 document.querySelector("#show").addEventListener('click', show);
 document.querySelector("#close").addEventListener('click', close);
 document.querySelector("#searchlog").addEventListener('click', searchlog);
-document.querySelector("#news").addEventListener('click',getnews),
+document.querySelector("#news").addEventListener('click',getnews)
+
 function init()
 {
     var table = $('#activelogdatatable').DataTable();

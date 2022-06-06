@@ -45,7 +45,7 @@ public class ChartController {
 
         int randomfornotcache = (int)(Math.random()*100);
         //no image
-        model.addAttribute("TempIMGsrc","http://localhost:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
+        model.addAttribute("TempIMGsrc","http://ohora.iptime.org:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
 
         return "main.html";
     }
@@ -62,7 +62,7 @@ public class ChartController {
             int randomfornotcache = (int)(Math.random()*100);
 
             //for no cache image
-            model.addAttribute("TempIMGsrc","http://localhost:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
+            model.addAttribute("TempIMGsrc","http://ohora.iptime.org:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
 
             model.addAttribute("UserEmail",user.getEmail());
             model.addAttribute("profileimgsrc",user.getPicture());
