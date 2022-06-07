@@ -12,7 +12,7 @@
         <meta http-equiv="Pragma" content="no-cache"> <!-- ← HTTP 1.0에서 사용하던 방법 -->
         <meta http-equiv="Cache-Control" content="no-cache">
         <meta http-equiv="Expires" content="0"/>
-        <title>Analysis Something</title>
+        <title>Yes~ , it's okay to commit suicide~</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -21,7 +21,7 @@
         <div class="overlay"></div>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="main.html">To the MOON</a>
+            <a class="navbar-brand ps-3" href="main.html">Big short vs Big long</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -59,15 +59,15 @@
                                 <p> start <input type="date" id="start"></p>
                                 <p> end <input type="date" id="end"></p>
                                 <p> ticker
-                                    <select id="ticker">
+                                    <select id="ticker" style="width:95%">
                                         <option value="">-- 선택 --</option>
                                         <option th:each="val : ${TICKERS_MAS}" th:value="${val?.Name}"
-                                                th:utext="${val?.COMPANY_NAME}">
+                                                th:utext="${val?.COMPANY_NAME}" >
                                         </option>
                                     </select>
                                 </p>
-                                <p> add_days <input type="text" id="add_days"></p>
-                                <p> limitcount <input type="text" id="limitcount"></p>
+                                <p> add_days <input type="text" id="add_days" style="width:95%"></p>
+                                <p> limitcount <input type="text" id="limitcount" style="width:95%"></p>
                                 <p><input type="button" value="submit" onclick="getChart();"></p>
                             </form>
                             <div class="sb-sidenav-menu-heading">Interface</div>
@@ -215,11 +215,11 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div class="text-muted">Copyright &copy; It`s mine</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+                                <a href="http://ohora.iptime.org:8081/suicide.png">Privacy Policy</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="http://ohora.iptime.org:8081/revive.gif">Terms &amp; Conditions</a>
                             </div>
                         </div>
                     </div>

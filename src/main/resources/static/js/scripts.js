@@ -38,7 +38,7 @@ function getChart() {
     table.rows()
         .remove()
         .draw();
-    fetch('http://ohora.iptime.org:8080/chartdata', {
+    fetch('http://oh.nasdaqsimsilarity.kro.kr/chartdata', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -109,7 +109,7 @@ function show () {
     table.rows()
         .remove()
         .draw();
-    fetch('http://ohora.iptime.org:8080/activelog', {
+    fetch('http://oh.nasdaqsimsilarity.kro.kr/activelog', {
         method: 'POST',
         cache: 'no-cache',
         headers: {
