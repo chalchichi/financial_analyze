@@ -6,7 +6,13 @@
     // 
 // Scripts
 // 
-
+if(window.location.hostname != "localhost"){
+    var preurl='http://oh.nasdaqlongshort.kro.kr'
+    var preresourceurl = 'http://ohora.iptime.org:8081'
+}else{
+    var preurl='http://localhost:8080';
+    var preresourceurl = 'http://localhost:8081'
+}
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
@@ -32,13 +38,15 @@ function sleep(ms) {
 };
 
 function getChart() {
+    var url = preurl+'/chartdata'
+    var resourceurl = preresourceurl
     var formData = document.getElementById('charted');
     $(".overlay").show();
     var table = $('#datatablesSimple').DataTable();
     table.rows()
         .remove()
         .draw();
-    fetch('http://oh.nasdaqsimsilarity.kro.kr/chartdata', {
+    fetch(url, {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -73,7 +81,7 @@ function getChart() {
                 const rand2 = Math.floor(Math.random()*10000);
                 const email = document.getElementById("Email").textContent
 
-                var html = '                                        <object data="http://ohora.iptime.org:8081/myplot_' +email+ '.html?name='+rand2 +'"\n'+
+                var html = '                                        <object data="'+resourceurl+'/myplot_' +email+ '.html?name='+rand2 +'"\n'+
                     '                                                width="100%"\n' +
                     '                                                height="500"\n' +
                     '                                                type="text/html">\n' +
@@ -101,6 +109,7 @@ function getChart() {
 }
 
 function show () {
+    var url = preurl+'/activelog'
     console.log("show");
     document.querySelector(".background").className = "background show";
     const email = document.getElementById("Email").textContent
@@ -109,7 +118,7 @@ function show () {
     table.rows()
         .remove()
         .draw();
-    fetch('http://oh.nasdaqsimsilarity.kro.kr/activelog', {
+    fetch(url, {
         method: 'POST',
         cache: 'no-cache',
         headers: {

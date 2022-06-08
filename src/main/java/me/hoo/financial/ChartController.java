@@ -3,6 +3,7 @@ package me.hoo.financial;
 import lombok.RequiredArgsConstructor;
 import me.hoo.financial.oauth.SessionUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,8 @@ public class ChartController {
 
     private final HttpSession httpSession;
 
+    @Value("resource.server.url")
+    String resourceURL;
 
     public String mainpage(Model model)
     {

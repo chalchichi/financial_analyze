@@ -217,9 +217,9 @@
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; It`s mine</div>
                             <div>
-                                <a href="http://ohora.iptime.org:8081/suicide.png">Privacy Policy</a>
+                                <a th:href="${@environment.getProperty('resource.server.url')+'/suicide.png'}">Privacy Policy</a>
                                 &middot;
-                                <a href="http://ohora.iptime.org:8081/revive.gif">Terms &amp; Conditions</a>
+                                <a th:href="${@environment.getProperty('resource.server.url')+'/revive.gif'}">Terms &amp; Conditions</a>
                             </div>
                         </div>
                     </div>

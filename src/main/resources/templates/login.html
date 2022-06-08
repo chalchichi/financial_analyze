@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -22,7 +22,7 @@
                                     <div class="card-body">
                                         <form>
                                             <a href="/oauth2/authorization/google"  role="button">
-                                                <img src="http://ohora.iptime.org:8081/btn_google_signin.png" width="70%" height="70%">
+                                                <img th:src="${@environment.getProperty('resource.server.url')+'/btn_google_signin.png'}" width="70%" height="70%">
                                             </a>
                                         </form>
                                     </div>
