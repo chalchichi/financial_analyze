@@ -24,6 +24,13 @@ public class User
     @Column
     private String picture;
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Column
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;

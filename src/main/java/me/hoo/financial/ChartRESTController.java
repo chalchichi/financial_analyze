@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.swing.text.html.Option;
 import java.awt.*;
 import java.io.*;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,6 +43,9 @@ public class ChartRESTController {
     @Autowired
     TICKERS_MASRepository tickers_masRepository;
 
+    @Autowired
+    UserLoginService userLoginService;
+
     private final HttpSession httpSession;
 
     @ExceptionHandler(InterruptedException.class)
@@ -51,6 +55,12 @@ public class ChartRESTController {
 
     }
 
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<String> duplicatedid(Exception e) {
+        log.error("SQLIntegrityConstraintViolationException", e);
+        return ResponseEntity.badRequest().body("email duplicated");
+
+    }
 
     @GetMapping(value = "/Totalchart", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
@@ -103,6 +113,12 @@ public class ChartRESTController {
     {
         List<USER_SEARCH_LOG> loglist = user_search_logService.getusersearchloglist(email);
         return loglist;
+    }
+
+    @PostMapping("/account")
+    public String registAccount(@RequestParam Map<String, String> userpara) throws SQLIntegrityConstraintViolationException {
+        userLoginService.registUser(userpara);
+        return "OK";
     }
 
     
