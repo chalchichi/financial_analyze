@@ -38,7 +38,7 @@
                         <img th:src="${profileimgsrc}" class="fas fa-user fa-fw"/>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <img th:src="${profileimgsrc}"/>
+                        <img th:src="${profileimgsrc}" style="width: 100%; height: 100%"/>
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
                         <li>
                             <button class="dropdown-item" id="show">Active Log</button>
@@ -141,16 +141,16 @@
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Financial Report</div>
+                                    <div class="card-body">Example Condition</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <button id="examplerun" style="border-color: transparent ; background-color: transparent; color: white; text-decoration-line: underline;">Run</button>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Statical report</div>
+                                    <div class="card-body">Financial and Statical report</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="#">View Details</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -191,7 +191,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Analysis Data
+                                Target Data
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -217,7 +217,7 @@
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; It`s mine</div>
                             <div>
-                                <a th:href="${@environment.getProperty('resource.server.url')+'/suicide.png'}">Privacy Policy</a>
+                                <a th:href="${@environment.getProperty('resource.server.url')+'/wallstreetbet.jpeg'}">Privacy Policy</a>
                                 &middot;
                                 <a th:href="${@environment.getProperty('resource.server.url')+'/revive.gif'}">Terms &amp; Conditions</a>
                             </div>

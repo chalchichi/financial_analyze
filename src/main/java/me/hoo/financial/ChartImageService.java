@@ -4,6 +4,7 @@ package me.hoo.financial;
 import lombok.extern.slf4j.Slf4j;
 import me.hoo.financial.LogAOP.UserActiveLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,14 @@ public class ChartImageService {
     @Autowired
     MAIN_STOCK_20Y_INFRepository main_stock_20Y_infRepository;
 
+    @Value("${mysql.user}")
+    String mysqluser;
+
+    @Value("${mysql.password}")
+    String mysqlpassword;
+
     @UserActiveLog
-    public List<Map<String, Date>> chartService(Date start, Date end, String ticker, String add_days, String limitcount,String email) throws IOException, InterruptedException, ParseException {
+    public List<MAIN_STOCK_20Y_INF> chartoneService(Date start, Date end, String ticker, String add_days, String limitcount,String email) throws IOException, InterruptedException, ParseException {
         List<Map<String,Date>> targetlist = new ArrayList<>();
         Optional<TICKERS_MAS> mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
         TICKERS_MAS tickers_mas = mas.get();
@@ -36,7 +43,7 @@ public class ChartImageService {
         List<MAIN_STOCK_20Y_INF> betweenticker= main_stock_20Y_infRepository.findMAIN_STOCK_20Y_INFByTDAYBetweenAndTICKEREquals(start ,end ,tickers_mas);
         String cmd = "Rscript /Users/ohyunhu/RProject/NasDaq-Analysis/TimeAnalysis.R";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");   // yyyy-MM-dd HH:mm:ss
-        String Target_end_date = formatter.format(end);
+        String Target_end_date = formatter.format(betweenticker.get(betweenticker.size()-1).getTDAY());
         String Days = Integer.toString(betweenticker.size());
         cmd +=" "+Target_end_date;
         cmd +=" "+Days;
@@ -80,7 +87,58 @@ public class ChartImageService {
             throw new InterruptedException();
         }
         p.destroy();
-        return targetlist;
+        return betweenticker;
+
+    }
+
+    @UserActiveLog
+    public List<MAIN_STOCK_20Y_INF> chartService(Date start, Date end, String ticker, String add_days, String limitcount,String email) throws IOException, InterruptedException, ParseException {
+
+        Optional<TICKERS_MAS> mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
+        TICKERS_MAS tickers_mas = mas.get();
+        CSVwriter csvwriter = new CSVwriter();
+
+        List<MAIN_STOCK_20Y_INF> betweenticker= main_stock_20Y_infRepository.findMAIN_STOCK_20Y_INFByTDAYBetweenAndTICKEREquals(start ,end ,tickers_mas);
+        csvwriter.writeCSV(betweenticker);
+
+        String cmd = "Rscript /Users/ohyunhu/RProject/NasDaq-Analysis/AllDataTimeAnalysis.R";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");   // yyyy-MM-dd HH:mm:ss
+        String Target_end_date = formatter.format(betweenticker.get(betweenticker.size()-1).getTDAY());
+        String Days = Integer.toString(betweenticker.size());
+        cmd +=" "+Target_end_date;
+        cmd +=" "+Days;
+        cmd +=" "+add_days;
+        cmd +=" "+limitcount;
+        cmd +=" "+email;
+        cmd +=" "+mysqluser;
+        cmd +=" "+mysqlpassword;
+        String s;
+
+        Process p = Runtime.getRuntime().exec(cmd);
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        while ((s = br.readLine()) != null)
+        {
+            System.out.println(s);
+        }
+
+        p.waitFor();
+        System.out.println("exit: " + p.exitValue());
+        if(p.exitValue()==1)
+        {
+            InputStream standardError = p.getErrorStream(); // 에러스트림을 가져온다.
+            InputStreamReader ow = new InputStreamReader(standardError); // 에러스트림을 읽어들인다
+            BufferedReader errorReader = new BufferedReader(ow);// 버퍼로 읽어들인다.
+            StringBuffer stderr = new StringBuffer();
+            String lineErr = null;
+            while((lineErr = errorReader.readLine()) != null){
+                stderr.append(lineErr).append("\n");
+            }
+            // 에러데이타를 콘솔에 출력
+            System.out.println(stderr.toString());
+            throw new InterruptedException();
+        }
+        p.destroy();
+        return betweenticker;
 
     }
 

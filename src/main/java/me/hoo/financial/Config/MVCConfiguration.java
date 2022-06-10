@@ -20,7 +20,7 @@ public class MVCConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://ohora.iptime.org:8081")
+                .allowedOrigins("http://oh.nasdaqlongshort.kro.kr/")
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
 }

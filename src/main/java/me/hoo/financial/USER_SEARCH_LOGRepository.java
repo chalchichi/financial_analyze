@@ -1,6 +1,6 @@
 package me.hoo.financial;
 
-import me.hoo.financial.oauth.User;
+import me.hoo.financial.Authentication.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

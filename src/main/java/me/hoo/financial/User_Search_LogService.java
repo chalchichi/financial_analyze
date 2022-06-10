@@ -1,7 +1,7 @@
 package me.hoo.financial;
 
-import me.hoo.financial.oauth.User;
-import me.hoo.financial.oauth.UserRepository;
+import me.hoo.financial.Authentication.User;
+import me.hoo.financial.Authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

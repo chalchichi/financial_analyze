@@ -7,7 +7,7 @@ if(window.location.hostname != "localhost"){
 }
 
 function createaccount () {
-    var url = preurl+'/account'
+    var url = preurl + '/account'
 
     var formData = document.getElementById('register');
     fetch(url, {
@@ -19,8 +19,8 @@ function createaccount () {
         body: new URLSearchParams({
             name: formData.inputFirstName.value + formData.inputLastName.value,
             email: formData.inputEmail.value,
-            picture: preresourceurl+'/suicide.png',
-            password : formData.inputPassword.value
+            picture: preresourceurl + '/suicide.png',
+            password: formData.inputPassword.value
         })
     })
         .then((response) => {
@@ -32,5 +32,31 @@ function createaccount () {
         .catch((error) => {
             error.text().then(msg => alert(msg))
         });
+}
 
+function loginaccount() {
+    var url = preurl + '/login'
+
+    var formData = document.getElementById('loginform');
+    fetch(url, {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            username: formData.inputEmail.value,
+            password: formData.inputPassword.value
+        })
+    })
+        .then((response) => {
+            console.log(response);
+            if (!response.ok) {
+                throw response;
+            }
+            location.href = "/main";
+        })
+        .catch((error) => {
+            error.text().then(msg => alert(msg))
+        });
 }

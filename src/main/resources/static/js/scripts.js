@@ -176,6 +176,24 @@ function searchlog()
     getChart();
 }
 
+function runexample()
+{
+
+    const start = '2022-04-01';
+    const end = '2022-05-02';
+    const ticker = 'AAPL';
+    const adddays = 10;
+    const limitcount = 7;
+
+    $('#start').val(start);
+    $('#end').val(end);
+    $('#ticker').val(ticker);
+    $('#add_days').val(adddays);
+    $('#limitcount').val(limitcount);
+
+    getChart();
+}
+
 function getnews()
 {
     var formData = document.getElementById('charted');
@@ -187,6 +205,7 @@ document.querySelector("#show").addEventListener('click', show);
 document.querySelector("#close").addEventListener('click', close);
 document.querySelector("#searchlog").addEventListener('click', searchlog);
 document.querySelector("#news").addEventListener('click',getnews)
+document.querySelector("#examplerun").addEventListener('click',runexample)
 
 function init()
 {
@@ -208,6 +227,7 @@ function init()
     formData.ticker.value = sessionStorage.getItem('ticker')
     formData.add_days.value = sessionStorage.getItem('add_days')
     formData.limitcount.value = sessionStorage.getItem('limitcount')
+
 }
 
 init();

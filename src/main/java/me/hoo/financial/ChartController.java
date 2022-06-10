@@ -1,10 +1,13 @@
 package me.hoo.financial;
 
 import lombok.RequiredArgsConstructor;
-import me.hoo.financial.oauth.SessionUser;
+import me.hoo.financial.Authentication.SessionUser;
+import me.hoo.financial.Authentication.User;
+import me.hoo.financial.Authentication.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -40,21 +40,22 @@ public class ChartController {
     @Value("resource.server.url")
     String resourceURL;
 
-    public String mainpage(Model model)
-    {
-        List<TICKERS_MAS> result = tickers_masRepository.findTICKERS_MASByISMAINSTOCK(true);
-        model.addAttribute("TICKERS_MAS",result);
-        tickerlist = result;
-
-        int randomfornotcache = (int)(Math.random()*100);
-        //no image
-        model.addAttribute("TempIMGsrc","http://ohora.iptime.org:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
-
-        return "main.html";
-    }
+    @Autowired
+    UserLoginService userLoginService;
 
     @GetMapping("/")
     public String loginpage(Model model)
+    {
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        //for oauth login...
+        if(user != null){
+            return "redirect:/main";
+        }
+        return "login.html";
+    }
+
+    @GetMapping("/main")
+    public String mainpage(Model model)
     {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
@@ -71,12 +72,12 @@ public class ChartController {
             model.addAttribute("profileimgsrc",user.getPicture());
             return "main.html";
         }
-        return "login.html";
+        return "redirect:/";
     }
 
     @GetMapping("/main.html")
     public String handleStep2Get() {
-        return "redirect:/";
+        return "redirect:/main";
     }
 
     @GetMapping("/news")
@@ -101,4 +102,5 @@ public class ChartController {
         model.addAttribute("newslist",newslist);
         return "news.html";
     }
+
 }

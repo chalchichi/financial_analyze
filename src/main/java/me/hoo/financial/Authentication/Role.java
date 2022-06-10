@@ -1,4 +1,4 @@
-package me.hoo.financial.oauth;
+package me.hoo.financial.Authentication;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
