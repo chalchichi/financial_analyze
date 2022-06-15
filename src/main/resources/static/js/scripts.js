@@ -206,7 +206,7 @@ document.querySelector("#close").addEventListener('click', close);
 document.querySelector("#searchlog").addEventListener('click', searchlog);
 document.querySelector("#news").addEventListener('click',getnews)
 document.querySelector("#examplerun").addEventListener('click',runexample)
-
+document.querySelector("#inforun").addEventListener('click',searchinfo)
 function init()
 {
     var table = $('#activelogdatatable').DataTable();
@@ -230,5 +230,19 @@ function init()
 
 }
 
+function searchinfo()
+{
+    var formData = document.getElementById('charted');
+    const t = formData.ticker.value;
+    if(t=="")
+    {
+        alert("Select ticker")
+    }
+    else
+    {
+        console.log("/stockinfo?ticker=" + t);
+        location.href = "/stockinfo?ticker=" + t;
+    }
+}
 init();
 
