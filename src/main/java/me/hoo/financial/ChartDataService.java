@@ -1,6 +1,7 @@
 package me.hoo.financial;
 
 import me.hoo.financial.LogAOP.UserActiveLog;
+import me.hoo.financial.VO.datajsonVO;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -110,5 +111,45 @@ public class ChartDataService {
         }
         newshtml+="</div></details>";
         return newshtml;
+    }
+
+    public List<datajsonVO> getstockinfo(String ticker) throws IOException, InterruptedException {
+        String cmd = "python /Users/ohyunhu/RProject/NasDaq-Analysis/getstockinfo.py";
+        cmd +=" "+ticker;
+        String s;
+        String res = null;
+        Process p = Runtime.getRuntime().exec(cmd);
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        while ((s = br.readLine()) != null)
+        {
+            System.out.println(s);
+            res = s;
+        }
+        p.waitFor();
+        System.out.println("exit: " + p.exitValue());
+        if(p.exitValue()==1)
+        {
+            InputStream standardError = p.getErrorStream(); // 에러스트림을 가져온다.
+            InputStreamReader ow = new InputStreamReader(standardError); // 에러스트림을 읽어들인다
+            BufferedReader errorReader = new BufferedReader(ow);// 버퍼로 읽어들인다.
+            StringBuffer stderr = new StringBuffer();
+            String lineErr = null;
+            while((lineErr = errorReader.readLine()) != null){
+                stderr.append(lineErr).append("\n");
+            }
+            // 에러데이타를 콘솔에 출력
+            System.out.println(stderr.toString());
+            throw new InterruptedException();
+        }
+        p.destroy();
+        Document doc = Document.parse(res);
+
+        List<datajsonVO> keyvalue = new ArrayList<>();
+        doc.keySet().forEach(x->
+        {
+            keyvalue.add(new datajsonVO(x, String.valueOf(doc.get(x))));
+        });
+
+        return keyvalue;
     }
 }

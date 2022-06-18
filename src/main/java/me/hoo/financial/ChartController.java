@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.hoo.financial.Authentication.SessionUser;
 import me.hoo.financial.Authentication.User;
 import me.hoo.financial.Authentication.UserLoginService;
+import me.hoo.financial.VO.datajsonVO;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -101,6 +103,14 @@ public class ChartController {
         }
         model.addAttribute("newslist",newslist);
         return "news.html";
+    }
+
+    @GetMapping("/stockinfo")
+    public String getinfo(@ModelAttribute("ticker") String ticker , Model model) throws IOException, InterruptedException {
+        List<datajsonVO> doc = chartDataService.getstockinfo(ticker);
+
+        model.addAttribute("info",doc);
+        return "infoDatatable.html";
     }
 
 }
