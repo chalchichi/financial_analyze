@@ -57,7 +57,8 @@ function getChart() {
             end: formData.end.value,
             ticker: formData.ticker.value,
             add_days: formData.add_days.value,
-            limitcount: formData.limitcount.value
+            limitcount: formData.limitcount.value,
+            chk_info: formData.chk_info.value
         })
     })
         .then((response) => response.json())

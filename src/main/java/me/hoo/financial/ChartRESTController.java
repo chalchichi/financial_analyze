@@ -101,10 +101,18 @@ public class ChartRESTController {
     @PostMapping("/chartdata")
     public List<MAIN_STOCK_20Y_INF> searchChart(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                               @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
-                              @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount
+                              @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount, @RequestParam String chk_info
             , Model model) throws IOException, InterruptedException, ParseException {
+        List<MAIN_STOCK_20Y_INF> targetlist;
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        List<MAIN_STOCK_20Y_INF> targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount,user.getEmail());
+        if(chk_info.equals("All"))
+        {
+            targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount,user.getEmail());
+        }
+        else
+        {
+            targetlist = chartImageService.chartoneService(start, end, ticker, add_days, limitcount,user.getEmail());
+        }
         //List<MAIN_STOCK_20Y_INF> tabledata = chartDataServcie.gettargetdata(ticker,targetlist);
         return targetlist;
     }
