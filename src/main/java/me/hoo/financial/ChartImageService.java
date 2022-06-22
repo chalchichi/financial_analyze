@@ -38,7 +38,7 @@ public class ChartImageService {
         Optional<TICKERS_MAS> mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
         TICKERS_MAS tickers_mas = mas.get();
         List<MAIN_STOCK_20Y_INF> ALLDATA = main_stock_20Y_infRepository.findMAIN_STOCK_20Y_INFByTICKER(tickers_mas, Sort.by(Sort.Direction.DESC,"TDAY"));
-        CSVwriter csvwriter = new CSVwriter();
+        CSVwriter csvwriter = new CSVwriter(email);
         csvwriter.writeCSV(ALLDATA);
         List<MAIN_STOCK_20Y_INF> betweenticker= main_stock_20Y_infRepository.findMAIN_STOCK_20Y_INFByTDAYBetweenAndTICKEREquals(start ,end ,tickers_mas);
         String cmd = "Rscript /Users/ohyunhu/RProject/NasDaq-Analysis/TimeAnalysis.R";
@@ -96,7 +96,7 @@ public class ChartImageService {
 
         Optional<TICKERS_MAS> mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
         TICKERS_MAS tickers_mas = mas.get();
-        CSVwriter csvwriter = new CSVwriter();
+        CSVwriter csvwriter = new CSVwriter(email);
 
         List<MAIN_STOCK_20Y_INF> betweenticker= main_stock_20Y_infRepository.findMAIN_STOCK_20Y_INFByTDAYBetweenAndTICKEREquals(start ,end ,tickers_mas);
         csvwriter.writeCSV(betweenticker);

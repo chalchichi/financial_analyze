@@ -202,12 +202,22 @@ function getnews()
     location.href = "/news?start="+formData.start.value+"&end="+formData.end.value;
 }
 
+function showfull() {
+    location.href = "/main/plot";
+}
+
+
+
 document.querySelector("#show").addEventListener('click', show);
 document.querySelector("#close").addEventListener('click', close);
 document.querySelector("#searchlog").addEventListener('click', searchlog);
 document.querySelector("#news").addEventListener('click',getnews)
 document.querySelector("#examplerun").addEventListener('click',runexample)
 document.querySelector("#inforun").addEventListener('click',searchinfo)
+
+
+document.querySelector("#showfull").addEventListener('click',showfull)
+
 function init()
 {
     var table = $('#activelogdatatable').DataTable();

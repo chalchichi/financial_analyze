@@ -113,4 +113,13 @@ public class ChartController {
         return "infoDatatable.html";
     }
 
+    @GetMapping("/main/plot")
+    public String showinfull(Model model)
+    {
+        int randomfornotcache = (int)(Math.random()*100);
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        String showfullurl = resourceURL+"/myplot_" +user.getEmail()+ ".html?name="+Integer.toString(randomfornotcache);
+        return "redirect:"+showfullurl;
+
+    }
 }

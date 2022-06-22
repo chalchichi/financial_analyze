@@ -4,8 +4,13 @@ import java.io.*;
 import java.util.List;
 
 public class CSVwriter {
+    String Email;
+    public CSVwriter(String email) {
+        this.Email = email;
+    }
+
     public void writeCSV(List<MAIN_STOCK_20Y_INF> dataList) throws IOException {
-        File csv = new File("/Users/ohyunhu//RProject/NasDaq-Analysis/TEMP.csv");
+        File csv = new File("/Users/ohyunhu//RProject/NasDaq-Analysis/"+Email+".csv");
         BufferedWriter bw = null; // 출력 스트림 생성
         try {
             bw = new BufferedWriter(new FileWriter(csv));
