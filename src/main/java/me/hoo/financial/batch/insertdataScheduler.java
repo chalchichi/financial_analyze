@@ -13,7 +13,7 @@ public class insertdataScheduler {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    @Value("flask.insert.server")
+    @Value("${flask.insert.server}")
     String insertURL;
 
     @Scheduled(cron = "0 0 9 * * *")

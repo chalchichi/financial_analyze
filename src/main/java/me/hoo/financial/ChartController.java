@@ -39,7 +39,7 @@ public class ChartController {
 
     private final HttpSession httpSession;
 
-    @Value("resource.server.url")
+    @Value("${resource.server.url}")
     String resourceURL;
 
     @Autowired
@@ -68,7 +68,7 @@ public class ChartController {
             int randomfornotcache = (int)(Math.random()*100);
 
             //for no cache image
-            model.addAttribute("TempIMGsrc","http://ohora.iptime.org:8081/files/myplot.png?name="+Integer.toString(randomfornotcache));
+            model.addAttribute("TempIMGsrc",resourceURL+"/files/myplot.png?name="+Integer.toString(randomfornotcache));
 
             model.addAttribute("UserEmail",user.getEmail());
             model.addAttribute("profileimgsrc",user.getPicture());
