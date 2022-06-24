@@ -13,6 +13,11 @@ if(window.location.hostname != "localhost"){
     var preurl='http://localhost:8080';
     var preresourceurl = 'http://localhost:8081'
 }
+
+var table = $('#datatablesSimple').DataTable();
+table.rows()
+    .remove()
+    .draw();
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation

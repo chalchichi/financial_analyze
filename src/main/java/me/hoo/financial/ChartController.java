@@ -82,6 +82,15 @@ public class ChartController {
         return "redirect:/main";
     }
 
+    @GetMapping("/Chart-Board.html")
+    public String chartboard(Model model)
+    {
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        model.addAttribute("UserEmail",user.getEmail());
+        model.addAttribute("profileimgsrc",user.getPicture());
+        return "Chart-Board.html";
+    }
+
     @GetMapping("/news")
     public String getnews(@ModelAttribute("start") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                           @ModelAttribute("end")  @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
