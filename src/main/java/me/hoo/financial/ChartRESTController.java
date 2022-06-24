@@ -4,7 +4,6 @@ package me.hoo.financial;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.hoo.financial.Authentication.SessionUser;
-import me.hoo.financial.Authentication.User;
 import me.hoo.financial.Authentication.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,6 +39,8 @@ public class ChartRESTController {
 
     @Autowired
     UserLoginService userLoginService;
+
+
 
     private final HttpSession httpSession;
 
@@ -130,4 +131,16 @@ public class ChartRESTController {
         return "OK";
     }
 
+    @PostMapping("/comment")
+    public String registComment(@RequestParam Map<String, String> comment) throws IOException {
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        String writer = user.getName();
+        return chartDataServcie.registboard(comment,writer);
+    }
+
+    @PostMapping("/commentdata")
+    public List<Comment> getComment() throws IOException {
+        List<Comment> comments = chartDataServcie.getallcomment();
+        return comments;
+    }
 }

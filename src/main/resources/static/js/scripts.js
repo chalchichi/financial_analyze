@@ -18,6 +18,24 @@ var table = $('#datatablesSimple').DataTable();
 table.rows()
     .remove()
     .draw();
+
+
+$('#summernote').summernote({
+    placeholder: 'write comment',
+    tabsize: 2,
+    height: 300,
+    toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['table', ['table']],
+        ['insert', ['link']],
+        ['view', ['fullscreen', 'codeview', 'help']]
+    ]
+});
+
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
@@ -219,10 +237,10 @@ document.querySelector("#searchlog").addEventListener('click', searchlog);
 document.querySelector("#news").addEventListener('click',getnews)
 document.querySelector("#examplerun").addEventListener('click',runexample)
 document.querySelector("#inforun").addEventListener('click',searchinfo)
-
-
+document.querySelector("#write").addEventListener('click',writeboard)
 document.querySelector("#showfull").addEventListener('click',showfull)
-
+document.querySelector("#regist").addEventListener('click',regist)
+document.querySelector("#cancleboard").addEventListener('click',closeboard)
 function init()
 {
     var table = $('#activelogdatatable').DataTable();
@@ -259,6 +277,47 @@ function searchinfo()
         console.log("/stockinfo?ticker=" + t);
         location.href = "/stockinfo?ticker=" + t;
     }
+}
+
+function writeboard() {
+    document.querySelector(".background2").className = "background2 show";
+}
+
+function closeboard () {
+    console.log("close")
+    document.querySelector(".background2").className = "background2";
+}
+
+function regist () {
+    var resourceurl = preresourceurl
+    var url = preurl+'/comment'
+    var markupStr = $('#summernote').summernote('code');
+    var title = $('#commenttitle').val()
+    const email = document.getElementById("Email").textContent
+    var formData = document.getElementById('charted');
+
+    var plotpath = '/myplot_' +email+ '.html';
+    fetch(url, {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            title : title,
+            markupStr: markupStr,
+            plotpath : plotpath,
+            ticker: formData.ticker.value,
+        })
+    })
+        .then((response) => response.text())
+        .then(datatext=>{
+            console.log(datatext)
+            closeboard()
+            alert("save complete")
+        })
+
+
 }
 init();
 

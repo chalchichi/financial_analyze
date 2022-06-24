@@ -9,11 +9,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,6 +29,9 @@ public class ChartDataService {
 
     @Autowired
     TICKERS_MASRepository tickers_masRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
     public List<MAIN_STOCK_20Y_INF> gettargetdata(String ticker, List<Map<String, Date>> targetdatelist)
     {
         TICKERS_MAS tickers_mas = tickers_masRepository.findTICKERS_MASByCName(ticker).get();
@@ -153,5 +156,30 @@ public class ChartDataService {
         return keyvalue;
     }
 
+    public String registboard(@RequestParam Map<String, String> comment, String writer) throws IOException {
+        String title = comment.get("title");
+        String content = comment.get("markupStr");
+        String plotpath = comment.get("plotpath");
+        String Rprojecturl = "/Users/ohyunhu/RProject/NasDaq-Analysis";
+        String copypath = Rprojecturl+"/"+title+".html";
+        String ticker = comment.get("ticker");
+        Optional<TICKERS_MAS> tickers_mas = tickers_masRepository.findTICKERS_MASByCName(ticker);
+        File file = new File(Rprojecturl+plotpath);
+        File newFile = new File(Rprojecturl+"/"+title+".html");
+        Files.copy(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Comment newcomment = new Comment();
+        newcomment.setTitle(title);
+        newcomment.setPlotpath(copypath);
+        newcomment.setViews(1);
+        newcomment.setContent(content);
+        newcomment.setCompany(tickers_mas.get().getCOMPANY_NAME());
+        newcomment.setWriter(writer);
+        commentRepository.save(newcomment);
+        return "OK";
+    }
 
+    public List<Comment> getallcomment()
+    {
+        return commentRepository.findAll();
+    }
 }
