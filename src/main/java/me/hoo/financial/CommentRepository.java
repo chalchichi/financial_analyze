@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment,Integer> {
     @Query("select u from Comment u where u.Title = :title")
-    Optional<TICKERS_MAS> findCommentbyTitle(String title);
+    Optional<Comment> findCommentbyTitle(String title);
 }

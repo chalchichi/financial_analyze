@@ -241,6 +241,8 @@ document.querySelector("#write").addEventListener('click',writeboard)
 document.querySelector("#showfull").addEventListener('click',showfull)
 document.querySelector("#regist").addEventListener('click',regist)
 document.querySelector("#cancleboard").addEventListener('click',closeboard)
+
+
 function init()
 {
     var table = $('#activelogdatatable').DataTable();

@@ -8,6 +8,7 @@ import me.hoo.financial.Authentication.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -142,5 +143,15 @@ public class ChartRESTController {
     public List<Comment> getComment() throws IOException {
         List<Comment> comments = chartDataServcie.getallcomment();
         return comments;
+    }
+
+    @PostMapping("/chartcommentboard")
+    public String getComment(@ModelAttribute("title") String title , @RequestParam Map<String, String> reply) throws IOException {
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        String username = user.getName();
+        String rep = reply.get("rep");
+
+        chartDataServcie.saveReply(username,rep,title);
+        return "ok";
     }
 }

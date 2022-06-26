@@ -10,6 +10,12 @@ table.rows()
     .remove()
     .draw();
 
+$('#Board tbody').on('click', 'tr', function () {
+    var data = table.row(this).data();
+    var url = preurl+'/chartcommentboard?title='+data[1];
+    location.href = url;
+});
+
 var url = preurl+'/commentdata'
 fetch(url, {
     method: 'POST',
@@ -38,3 +44,25 @@ fetch(url, {
 
         return datajson;
     })
+document.querySelector("#writereplybutton").addEventListener('click',writereply)
+
+function writereply () {
+    var rep = $('#replyinput').val();
+    var url = window.location;
+    fetch(url, {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            rep: rep
+        })
+    })
+        .then((response) => response.text())
+        .then(datatext=>{
+            location.reload();
+        })
+    console.log(rep)
+    console.log(url)
+}

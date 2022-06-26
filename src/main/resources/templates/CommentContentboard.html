@@ -65,30 +65,39 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Chart Comment Board</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="main.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="Chart-Board.html">Back to Index</a></li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Chart Board
+                                <div th:text="${title}"></div>
+                                <div th:text="${writer}" style='float: right;'></div>
                             </div>
-                            <div class="card-body">
-                                <table id="Board" class="hover">
-                                    <thead>
-                                    <tr>
-                                        <th style="width:15%">Company</th>
-                                        <th>Title</th>
-                                        <th style="width:10%">Writer</th>
-                                        <th style="width:5%">Views</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id = "Board_ROW">
-                                    </tbody>
-                                </table>
+                            <div class="card-body" id = "plotcontent">
+
                             </div>
                         </div>
-                        <div style="height: 100vh"></div>
-                        <div class="card mb-4"><div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div></div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                reply
+                            </div>
+                            <div class="card-body">
+                                <table>
+                                    <tr>
+                                        <th>writer</th>
+                                        <th>time</th>
+                                        <th>comment</th>
+                                    </tr>
+                                    <tr th:each="reply: ${replies}">
+                                        <td th:text="${reply.writer}">#</td>
+                                        <td th:text="${reply.writetime}">이벤트 이름</td>
+                                        <td th:text="${reply.commentreply}">100</td>
+                                    </tr>
+                                </table>
+                                <input id = "replyinput" style="width: 80%">
+                                <button id="writereplybutton" style='float: right;'>Enter</button>
+                            </div>
+                        </div>
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -107,5 +116,17 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/Board_contents.js"></script>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var plotpath = [[${plotpath}]];
+            var content = [[${content}]];
+            var html = '                                        <object data="'+plotpath+'"\n'+
+            '                                                width="100%"\n' +
+            '                                                height="500"\n' +
+            '                                                type="text/html">\n' +
+            '                                        </object>\n' + content
+            $('#plotcontent').html(html)
+            /*]]>*/
+        </script>
     </body>
 </html>

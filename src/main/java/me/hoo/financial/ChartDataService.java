@@ -32,6 +32,10 @@ public class ChartDataService {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    ReplyRepository replyRepository;
+
     public List<MAIN_STOCK_20Y_INF> gettargetdata(String ticker, List<Map<String, Date>> targetdatelist)
     {
         TICKERS_MAS tickers_mas = tickers_masRepository.findTICKERS_MASByCName(ticker).get();
@@ -181,5 +185,30 @@ public class ChartDataService {
     public List<Comment> getallcomment()
     {
         return commentRepository.findAll();
+    }
+
+    public Comment getcommentboard(String title)
+    {
+        Optional<Comment> ocomment = commentRepository.findCommentbyTitle(title);
+        Comment comment = ocomment.get();
+        comment.addview();
+        commentRepository.flush();
+        return comment;
+    }
+
+    public void saveReply(String username, String rep, String title) {
+        Reply reply = new Reply();
+        Optional<Comment> comment = commentRepository.findCommentbyTitle(title);
+        Comment comment1 = comment.get();
+        reply.setWriter(username);
+        reply.setCommentreply(rep);
+        reply.setComment(comment1);
+        replyRepository.save(reply);
+    }
+
+    public List<Reply> getReply(Comment comment) {
+
+        List<Reply> replies = replyRepository.findReplyByComment(comment);
+        return replies;
     }
 }

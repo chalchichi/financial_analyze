@@ -131,4 +131,17 @@ public class ChartController {
         return "redirect:"+showfullurl;
 
     }
+
+    @GetMapping("/chartcommentboard")
+    public String getcommentdata(@ModelAttribute("title") String title , Model model) throws IOException, InterruptedException {
+        Comment comment = chartDataService.getcommentboard(title);
+        List<Reply> replies = chartDataService.getReply(comment);
+        model.addAttribute("title", title);
+        model.addAttribute("writer",comment.getWriter());
+        model.addAttribute("views",comment.getViews()+1);
+        model.addAttribute("plotpath",resourceURL+"/"+comment.getTitle()+".html");
+        model.addAttribute("content",comment.getContent());
+        model.addAttribute("replies",replies);
+        return "CommentContentboard.html";
+    }
 }

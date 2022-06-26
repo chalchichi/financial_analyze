@@ -21,4 +21,9 @@ public class Comment {
     private Integer Views;
     private String Plotpath;
     private String Content;
+
+    public void addview()
+    {
+        this.Views+=1;
+    }
 }
