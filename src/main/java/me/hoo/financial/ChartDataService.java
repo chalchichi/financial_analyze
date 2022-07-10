@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.*;
@@ -187,6 +188,7 @@ public class ChartDataService {
         return commentRepository.findAll();
     }
 
+    @Transactional
     public Comment getcommentboard(String title)
     {
         Optional<Comment> ocomment = commentRepository.findCommentbyTitle(title);
@@ -196,6 +198,7 @@ public class ChartDataService {
         return comment;
     }
 
+    @Transactional
     public void saveReply(String username, String rep, String title) {
         Reply reply = new Reply();
         Optional<Comment> comment = commentRepository.findCommentbyTitle(title);
