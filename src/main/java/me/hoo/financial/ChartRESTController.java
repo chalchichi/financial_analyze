@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.hoo.financial.Authentication.SessionUser;
 import me.hoo.financial.Authentication.UserLoginService;
+import me.hoo.financial.Redis.Plotrequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,7 +42,8 @@ public class ChartRESTController {
     @Autowired
     UserLoginService userLoginService;
 
-
+    private final StringRedisTemplate userplotRedisTemplate;
+    private final RedisTemplate<String, MAIN_STOCK_20Y_INF> redisTemplate;
 
     private final HttpSession httpSession;
 
@@ -105,15 +107,52 @@ public class ChartRESTController {
                               @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
                               @RequestParam String ticker, @RequestParam String add_days, @RequestParam String limitcount, @RequestParam String chk_info
             , Model model) throws IOException, InterruptedException, ParseException {
-        List<MAIN_STOCK_20Y_INF> targetlist;
+
+
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if(chk_info.equals("All"))
+
+        String plotrequestkey = Plotrequest.builder().useremail(user.getEmail())
+                .start(start)
+                .end(end)
+                .ticker(ticker)
+                .add_days(add_days)
+                .limitcount(limitcount)
+                .chk_info(chk_info)
+                .build().toString();
+
+
+        RedisOperations<String, MAIN_STOCK_20Y_INF> operations = redisTemplate.opsForList().getOperations();
+        List<MAIN_STOCK_20Y_INF> targetlist;
+        Optional<String> cahsed_data_by_user = Optional.ofNullable(userplotRedisTemplate.opsForValue().get(user.getEmail()));
+        Long datasize = operations.opsForList().size(plotrequestkey);
+        if(cahsed_data_by_user.isPresent() && datasize!=0 && cahsed_data_by_user.get().equals(plotrequestkey))
         {
-            targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount,user.getEmail());
+            targetlist = new ArrayList<>();
+            for(int i =0 ;i<datasize;i++)
+            {
+                MAIN_STOCK_20Y_INF temp = operations.opsForList().leftPop(plotrequestkey);
+                targetlist.add(temp);
+                redisTemplate.opsForList().rightPush(plotrequestkey,temp);
+            }
         }
         else
         {
-            targetlist = chartImageService.chartoneService(start, end, ticker, add_days, limitcount,user.getEmail());
+            if(chk_info.equals("All"))
+            {
+                targetlist = chartImageService.chartService(start, end, ticker, add_days, limitcount,user.getEmail());
+            }
+            else
+            {
+                targetlist = chartImageService.chartoneService(start, end, ticker, add_days, limitcount,user.getEmail());
+            }
+
+            userplotRedisTemplate.opsForValue().set(user.getEmail(),plotrequestkey);
+
+            if(datasize==0) {
+                targetlist.forEach(x ->
+                        redisTemplate.opsForList().rightPush(plotrequestkey, x)
+                );
+            }
         }
         //List<MAIN_STOCK_20Y_INF> tabledata = chartDataServcie.gettargetdata(ticker,targetlist);
         return targetlist;
